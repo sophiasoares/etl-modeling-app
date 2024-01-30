@@ -1,0 +1,20 @@
+<div cdkDropListGroup>
+    <div class="node-container" cdkDropList #nodeList="cdkDropList" [cdkDropListData]="nodes" cdkDropListSortingDisabled>
+        <div *ngFor="let node of nodes" cdkDrag>
+            {{node}}
+            <div class="drag-preview" *cdkDragPreview>
+                {{node}}
+            </div>
+        </div>
+    </div>
+    <div class="grid-container" cdkDropList #gridList="cdkDropList" [cdkDropListData]="gridNodes"
+        (cdkDropListDropped)="drop($event)">
+        <svg [attr.viewBox]="viewBox" xmlns="http://www.w3.org/2000/svg">
+            <g stroke="#e4e4e4" stroke-width="1">
+                <line *ngFor="let line of gridLines" [attr.x1]="line.x1" [attr.y1]="line.y1" [attr.x2]="line.x2"
+                    [attr.y2]="line.y2" />
+            </g>
+        </svg>
+        <div *ngFor="let node of gridNodes" cdkDrag>{{node}}</div>
+    </div>
+</div>

@@ -1,0 +1,46 @@
+:host {
+    display: block;
+    width: 100%;
+    max-width: 900px;
+    margin: auto;
+}
+
+svg {
+    width: 100%;
+    height: auto;
+}
+
+.node-container {
+    border: solid 2px #b32038;
+    position: absolute;
+    left: 0;
+    width: 20%;
+    height: auto;
+    display: flex;
+    flex-direction: column;
+}
+
+.node-container [cdkDrag] {
+    flex-grow: 1;
+    padding: 10px;
+    margin: 3px;
+    margin-bottom: 0;
+}
+
+.grid-container [cdkDrag], .drag-preview {
+    display: inline-block;
+    margin: 16px;
+    padding: 16px;
+}
+
+.node-container [cdkDrag] ,.grid-container [cdkDrag], .drag-preview {
+    border: solid 1px #b32038;
+    background-color: #c04e83;
+}
+
+.grid-container {
+    position: absolute;
+    left: 21%;
+    width: 80%;
+    height: 100%;
+}
