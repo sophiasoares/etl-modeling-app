@@ -44,6 +44,11 @@ svg {
     left: 21%;
     width: 80%;
     height: 100%;
+
+    .cdk-drag-placeholder {
+        display: none !important;
+    }
+    
 }
 
 // Preview when dragging within the grid
@@ -51,3 +56,17 @@ svg {
     position: absolute;
 }
 
+.drag-preview, .grid-item {
+    border-radius: 8px;
+}
+
+.node-container div, .grid-container div {
+    cursor: pointer; 
+}
+  
+.grid-container div.selected {
+    border-color: #740d1e; 
+    border-width: 3px;
+    box-shadow: 4px 6px 8px #a33648;
+}
+  

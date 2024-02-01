@@ -4,10 +4,7 @@
         cdkDropListSortingDisabled (cdkDropListDropped)="drop($event)" (cdkDropListExited)="exited($event)"
         (cdkDropListEntered)="entered($event)">
         <div *ngFor="let node of nodes" cdkDrag [cdkDragData]="node">
-            <!-- Placeholder -->
-            <div *ngIf="node.temp">{{node.title}}</div>
-            <!-- Actual Node -->
-            <div *ngIf="!node.temp">{{node.title}}</div>
+            <div>{{node.title}}</div>
             <!-- Drag Preview -->
             <ng-template cdkDragPreview>
                 <div class="drag-preview">{{node.title}}</div>
@@ -22,8 +19,10 @@
                 <line *ngFor="let line of gridLines" [attr.x1]="line.x1" [attr.y1]="line.y1" [attr.x2]="line.x2" [attr.y2]="line.y2" />
             </g>
         </svg>
-        <div *ngFor="let node of gridNodes" cdkDrag [ngStyle]="{'left.px': node.position?.left, 'top.px': node.position?.top}" class="grid-item">
+        <div *ngFor="let node of gridNodes" cdkDrag [ngStyle]="{'left.px': node.position?.left, 'top.px': node.position?.top}" 
+        class="grid-item" (click)="onNodeClick(node)" [class.selected]="selectedNode === node">
             {{node.title}}
         </div>
     </div> 
 </div> 
+<app-settings-panel *ngIf="selectedNode" [node]="selectedNode"></app-settings-panel>

@@ -1,13 +1,23 @@
 import { Component, Input, SimpleChanges, OnChanges, ViewChild } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { CdkDragDrop, copyArrayItem, moveItemInArray, DragDropModule, CdkDragExit, CdkDropList, CdkDragEnter } from '@angular/cdk/drag-drop';
 import { FormsModule } from '@angular/forms';
 import { NodeItem } from '../models/node';
+import { SettingsPanelComponent } from '../settings-panel/settings-panel.component';
+import { 
+  DragDropModule,
+  CdkDragDrop, 
+  CdkDragStart, 
+  CdkDragEnd,
+  CdkDragExit, 
+  CdkDropList, 
+  CdkDragEnter,
+  moveItemInArray
+} from '@angular/cdk/drag-drop';
 
 @Component({
   selector: 'app-grid',
   standalone: true,
-  imports: [CommonModule, DragDropModule, FormsModule],
+  imports: [CommonModule, DragDropModule, FormsModule, SettingsPanelComponent],
   templateUrl: './grid.component.html',
   styleUrl: './grid.component.scss'
 })
@@ -19,6 +29,8 @@ export class GridComponent implements OnChanges {
   gridLines: any[] = [];
   nodes: NodeItem[] = Array(15).fill(0).map((x,i)=> { return { title: `Node ${i}`, id: i }; });
   gridNodes: NodeItem[] = [];
+  selectedNode: NodeItem | null = null;
+
 
   constructor() {
     this.size = 20; // default grid size
@@ -31,7 +43,7 @@ export class GridComponent implements OnChanges {
       this.createGridLines();
     }
   }
-  
+
 
   // Method to update the viewBox based on the size of the view
   updateViewBox() {
@@ -76,9 +88,7 @@ export class GridComponent implements OnChanges {
       // If moving a node within the node panel, do nothing
       if (event.container.id === this.gridList.id) {
         this.handleGridReorder(event);
-      } else { // TODO: remove else
-        console.log('Dropping from the panel to the panel');
-      }
+      } 
     } else {
       // Dragging from the panel to the grid
       if (event.previousContainer.id === this.nodeList.id && event.container.id === this.gridList.id) {
@@ -107,8 +117,8 @@ export class GridComponent implements OnChanges {
     itemCopy.position = dropPointRelative;
     this.gridNodes.push(itemCopy);
 
-    // Remove any temporary items from the panel's list
-    this.nodes = this.nodes.filter(item => !item.temp);
+    // Remove any temporary nodes from the panel's list
+    this.nodes = this.nodes.filter(node => !node.temp);
   }
 
 
@@ -139,6 +149,12 @@ export class GridComponent implements OnChanges {
     //   return;
     // }
   }
+
+  // Method to handle node click
+  onNodeClick(node: NodeItem) {
+    this.selectedNode = node;
+  }
+
   
 }
 
