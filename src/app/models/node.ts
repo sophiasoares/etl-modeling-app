@@ -6,5 +6,6 @@ export interface Node {
 export interface NodeItem {
     title: string;
     id: number;
-    temp?: boolean; // Optional property to indicate a temporary item
+    temp?: boolean;
+    position?: { left: number, top: number };
 }

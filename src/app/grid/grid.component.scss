@@ -28,22 +28,26 @@ svg {
 }
 
 
-.grid-container [cdkDrag], .drag-preview {
+.grid-container [cdkDrag], .drag-preview, .grid-item {
     display: inline-block;
     margin: 16px;
     padding: 16px;
 }
 
-.node-container [cdkDrag] ,.grid-container [cdkDrag], .drag-preview {
+.node-container [cdkDrag] ,.grid-container [cdkDrag], .drag-preview, .grid-item {
     border: solid 1px #b32038;
     background-color: #c04e83;
 }
 
 .grid-container {
-    position: absolute;
+    position: relative;
     left: 21%;
     width: 80%;
     height: 100%;
 }
 
+// Preview when dragging within the grid
+.grid-item {
+    position: absolute;
+}
 
