@@ -1,10 +1,16 @@
 <div cdkDropListGroup>
-    <div class="node-container" cdkDropList #nodeList="cdkDropList" [cdkDropListData]="nodes" cdkDropListSortingDisabled>
-        <div *ngFor="let node of nodes" cdkDrag>
-            {{node}}
-            <div class="drag-preview" *cdkDragPreview>
-                {{node}}
-            </div>
+    <div class="node-container" cdkDropList #nodeList="cdkDropList" [cdkDropListData]="nodes"
+        cdkDropListSortingDisabled (cdkDropListDropped)="drop($event)" (cdkDropListExited)="exited($event)"
+        (cdkDropListEntered)="entered()">
+        <div *ngFor="let node of nodes" cdkDrag [cdkDragData]="node">
+            <!-- Placeholder -->
+            <div *ngIf="node.temp">{{node.title}}</div>
+            <!-- Actual Item -->
+            <div *ngIf="!node.temp">{{node.title}}</div>
+            <!-- Drag Preview -->
+            <ng-template cdkDragPreview>
+                <div class="drag-preview">{{node.title}}</div>
+            </ng-template>
         </div>
     </div>
     <div class="grid-container" cdkDropList #gridList="cdkDropList" [cdkDropListData]="gridNodes"
@@ -15,6 +21,6 @@
                     [attr.y2]="line.y2" />
             </g>
         </svg>
-        <div *ngFor="let node of gridNodes" cdkDrag>{{node}}</div>
+        <div *ngFor="let node of gridNodes" cdkDrag>{{node.title}}</div>
     </div> 
-</div>
+</div> 
