@@ -3,78 +3,38 @@
 :host {
     display: block;
     width: 100%;
-    max-width: 900px;
     margin: auto;
 }
 
 svg {
-    width: 100%;
+    width: auto;
     height: auto;
 }
 
-.node-container {
-    border: solid $node-border-width $node-border-color;
-    border-radius: $container-border-radius;
-    position: absolute;
-    left: 0;
-    width: 20%;
-    height: auto;
-    display: flex;
-    flex-direction: column;
-    padding: 3px;
-    padding-bottom: 6px;
-    margin-left: 10px;
-}
-
-.node-container [cdkDrag] {
-    flex-grow: 1;
-    padding: 10px;
-    margin: 3px;
-    margin-bottom: 0;
-    border-radius: $container-border-radius;
-}
-
-
-.grid-container [cdkDrag], .drag-preview, .grid-item {
+.grid-container [cdkDrag], .grid-item {
     display: inline-block;
     margin: 16px;
     padding: 16px;
-}
-
-.node-container [cdkDrag] ,.grid-container [cdkDrag], .drag-preview, .grid-item {
     border: solid $node-border-width $node-border-color;
     background-color: $node-color;
 }
 
 .grid-container {
     position: relative;
-    left: 21%;
-    width: 80%;
+    width: 100%;
     height: 100%;
-
-    .cdk-drag-placeholder {
-        display: none !important;
-    }
 
     div.selected {
         border-width: $node-selected-border-width;
         box-shadow: $node-shadow
+    }    
+
+    div {
+        cursor: pointer; 
     }
-      
-    
 }
 
-// Preview when dragging within the grid
 .grid-item {
     position: absolute;
-}
-
-.drag-preview, .grid-item {
     border-radius: $node-border-radius;
 }
-
-.node-container div, .grid-container div {
-    cursor: pointer; 
-}
-
-  

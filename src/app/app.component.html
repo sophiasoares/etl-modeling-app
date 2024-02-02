@@ -8,5 +8,16 @@
         </div>
     </div>
 </div>
-<app-grid [size]="gridSize" (selectedNodeEmitter)="onSelectedNode($event)"></app-grid>
+<div class="container-fluid">
+    <div class="row row-children">
+        <div class="col-2">
+            <!-- Node List -->
+            <app-node-panel></app-node-panel>
+        </div>
+        <div class="col-10">
+            <!-- Grid -->
+            <app-grid [size]="gridSize" (selectedNodeEmitter)="onSelectedNode($event)"></app-grid> 
+        </div>
+    </div>
+</div>
 <app-settings-panel [node]="selectedNode"></app-settings-panel>

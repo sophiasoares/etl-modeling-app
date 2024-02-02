@@ -4,12 +4,20 @@ import { RouterOutlet } from '@angular/router';
 import { GridComponent } from './components/grid/grid.component';
 import { FormsModule } from '@angular/forms';
 import { SettingsPanelComponent } from './components/settings-panel/settings-panel.component';
+import { NodePanelComponent } from './components/node-panel/node-panel.component';
 import { NodeItem } from './models/node';
 
 @Component({
   selector: 'app-root',
   standalone: true,
-  imports: [CommonModule, RouterOutlet, GridComponent, FormsModule, SettingsPanelComponent],
+  imports: [
+    CommonModule, 
+    RouterOutlet, 
+    GridComponent, 
+    FormsModule, 
+    SettingsPanelComponent, 
+    NodePanelComponent
+  ],
   templateUrl: './app.component.html',
   styleUrl: './app.component.scss'
 })

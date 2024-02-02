@@ -13,3 +13,19 @@
         font-weight: 600;
     }
 }
+
+.row-children {
+    align-items: flex-start;
+}
+
+.col-2 {
+    padding-right: 0;
+}
+
+.col-10 {
+    padding-left: 6px;
+}
+
+.container-fluid {
+    height: 70vh;
+}

@@ -1,0 +1,72 @@
+@import '../../../variables';
+
+.node-container {
+    border: solid $node-border-width $node-border-color;
+    border-radius: $container-border-radius;
+    left: 0;
+    width: auto;
+    height: 70vh;
+    display: flex;
+    flex-direction: column;
+    padding: 3px;
+    padding-bottom: 6px;
+    overflow-y: scroll;
+
+    div {
+        cursor: pointer; 
+    }
+
+    // Display the placeholder inside the node container
+    .cdk-drag-placeholder {
+        display: block;  
+    }
+}
+
+// Hide the placeholder outside the node container (inside the grid)
+.cdk-drag-placeholder {
+    display: none;  
+}
+
+.node-container [cdkDrag] {
+    flex-grow: 1;
+    padding: 10px;
+    margin: 3px;
+    margin-bottom: 0;
+    border-radius: $container-border-radius;
+}
+
+.drag-preview {
+    border-radius: $node-border-radius;
+    display: inline-block;
+    margin: 16px;
+    padding: 16px;
+}
+
+.node-container [cdkDrag], .drag-preview {
+    border: solid $node-border-width $node-border-color;
+    background-color: $node-color;
+}
+
+.add-button {
+    margin-left: auto; 
+    margin-top: auto;
+    margin-top: 10px;
+}
+
+::-webkit-scrollbar-track {
+    background: lightgray;
+    border-radius: $scroll-bar-border-radius;
+}
+
+::-webkit-scrollbar-thumb {
+    background: $node-color;
+    border-radius: $scroll-bar-border-radius;
+}
+
+::-webkit-scrollbar-thumb:hover {
+    background: darken($node-color, 10%);
+}
+
+::-webkit-scrollbar {
+    width: 8px;
+}

@@ -1,27 +1,12 @@
-<div cdkDropListGroup>
-    <!-- Node List -->
-    <div class="node-container" cdkDropList #nodeList="cdkDropList" [cdkDropListData]="nodes"
-        cdkDropListSortingDisabled (cdkDropListDropped)="drop($event)" (cdkDropListExited)="exited($event)"
-        (cdkDropListEntered)="entered($event)">
-        <div *ngFor="let node of nodes" cdkDrag [cdkDragData]="node">
-            <div>{{node.title}}</div>
-            <!-- Drag Preview -->
-            <ng-template cdkDragPreview>
-                <div class="drag-preview">{{node.title}}</div>
-            </ng-template>
-        </div>
+<div class="grid-container" cdkDropList #gridList="cdkDropList" [cdkDropListData]="dragDropService.gridNodes"
+    (cdkDropListDropped)="dragDropService.drop($event)" id="grid-list">
+    <svg [attr.viewBox]="viewBox" xmlns="http://www.w3.org/2000/svg">
+        <g stroke="#e4e4e4" stroke-width="1">
+            <line *ngFor="let line of gridLines" [attr.x1]="line.x1" [attr.y1]="line.y1" [attr.x2]="line.x2" [attr.y2]="line.y2" />
+        </g>
+    </svg>
+    <div *ngFor="let node of dragDropService.gridNodes" cdkDrag [ngStyle]="{'left.px': node.position?.left, 'top.px': node.position?.top}" 
+    class="grid-item" (click)="onNodeClick(node)" [class.selected]="selectedNode === node">
+        {{node.title}}
     </div>
-    <!-- Grid -->
-    <div class="grid-container" cdkDropList #gridList="cdkDropList" [cdkDropListData]="gridNodes"
-        (cdkDropListDropped)="drop($event)">
-        <svg [attr.viewBox]="viewBox" xmlns="http://www.w3.org/2000/svg">
-            <g stroke="#e4e4e4" stroke-width="1">
-                <line *ngFor="let line of gridLines" [attr.x1]="line.x1" [attr.y1]="line.y1" [attr.x2]="line.x2" [attr.y2]="line.y2" />
-            </g>
-        </svg>
-        <div *ngFor="let node of gridNodes" cdkDrag [ngStyle]="{'left.px': node.position?.left, 'top.px': node.position?.top}" 
-        class="grid-item" (click)="onNodeClick(node)" [class.selected]="selectedNode === node">
-            {{node.title}}
-        </div>
-    </div> 
 </div> 

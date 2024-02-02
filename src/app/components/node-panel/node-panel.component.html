@@ -1,1 +1,11 @@
-<p>node-panel works!</p>
+<div class="node-container" cdkDropList #nodeList="cdkDropList" [cdkDropListData]="dragDropService.nodes" cdkDropListSortingDisabled
+    (cdkDropListDropped)="dragDropService.drop($event)" id="node-list"
+    (cdkDropListExited)="dragDropService.exited($event)" (cdkDropListEntered)="dragDropService.entered($event)">
+    <div *ngFor="let node of dragDropService.nodes" cdkDrag [cdkDragData]="node">
+        <div>{{node.title}}</div>
+        <!-- Drag Preview -->
+        <ng-template cdkDragPreview>
+            <div class="drag-preview">{{node.title}}</div>
+        </ng-template>
+    </div>
+</div>
