@@ -1,7 +1,7 @@
 <div class="node-container" cdkDropList #nodeList="cdkDropList" [cdkDropListData]="dragDropService.nodes" cdkDropListSortingDisabled
-    (cdkDropListDropped)="dragDropService.drop($event)" id="node-list"
+    (cdkDropListDropped)="dragDropService.drop($event)" id="node-list" 
     (cdkDropListExited)="dragDropService.exited($event)" (cdkDropListEntered)="dragDropService.entered($event)">
-    <div *ngFor="let node of dragDropService.nodes" cdkDrag [cdkDragData]="node">
+    <div *ngFor="let node of dragDropService.nodes" cdkDrag [cdkDragData]="node" (cdkDragStarted)="dragDropService.dragStarted($event)">
         <div>{{node.title}}</div>
         <!-- Drag Preview -->
         <ng-template cdkDragPreview>

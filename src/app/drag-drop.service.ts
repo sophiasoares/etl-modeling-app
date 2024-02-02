@@ -22,6 +22,10 @@ export class DragDropService implements OnInit {
   nodes: NodeItem[] = [];
   gridNodes: NodeItem[] = []; 
   dropLists: CdkDropList[] = [];
+  nodeBeingDragged!: NodeItem;
+  connectionLines: { x1: number; y1: number; x2: number; y2: number }[] = [ 
+    //{ x1: 0, y1: 0, x2: 0, y2: 0 }
+  ];
 
   constructor() {
     this.fillArrays();
@@ -91,10 +95,14 @@ export class DragDropService implements OnInit {
     // Calculate and set the position for the dropped item
     const dropPointRelative = this.calculateGridPosition(event.dropPoint.x, event.dropPoint.y, event.container.element.nativeElement);
     itemCopy.position = dropPointRelative;
+    itemCopy.id = this.gridNodes.length + 1;
     this.gridNodes.push(itemCopy);
 
     // Remove any temporary nodes from the panel's list
     this.nodes = this.nodes.filter(node => !node.temp);
+
+    // Update connections
+    this.updateConnections(itemCopy);
   }
 
 
@@ -126,6 +134,11 @@ export class DragDropService implements OnInit {
     // }
   }
 
+  // Method to handle the start of a drag event
+  dragStarted(event: CdkDragStart<NodeItem>) {
+    this.nodeBeingDragged = event.source.data;
+  }  
+
   // Method to calculate the position of a node relative to the grid
   calculateGridPosition(dropX: number, dropY: number, gridElement: HTMLElement): {left: number, top: number} {
     const gridRect = gridElement.getBoundingClientRect();
@@ -145,6 +158,98 @@ export class DragDropService implements OnInit {
     this.nodes = titles.map((title, index) => {
       return { title: title, id: index }; 
     });
-    
   }
+
+
+  updateConnections(newNode: NodeItem) {
+    // Assuming newNode is the latest node added and has its position set
+    const previousNodeId = newNode.id - 1;
+    const previousNode = this.gridNodes.find(node => node.id === previousNodeId);
+  
+    if (previousNode) {
+      // Optional: Track connections on the node itself
+      previousNode.connections = [...(previousNode.connections || []), newNode.id];
+      newNode.connections = [...(newNode.connections || []), previousNodeId];
+  
+      // Calculate the line between the two nodes
+      // get the width and height of the node
+      const startElement = document.getElementById(`node-${previousNode.id}`);
+      const endElement = document.getElementById(`node-${newNode.id}`);
+      const previousNodeWidth = startElement ? startElement.clientWidth : 0;
+      const previousNodeHeight = startElement ? startElement.clientHeight : 0;
+      const newNodeWidth = endElement ? endElement.clientWidth : 0;
+      const newNodeHeight = endElement ? endElement.clientHeight : 0;
+
+      const line = {
+        x1: previousNode.position!.left + (previousNodeWidth / 2),
+        y1: previousNode.position!.top,
+        x2: newNode.position!.left + (newNodeWidth / 2),
+        y2: newNode.position!.top + (newNodeHeight / 2),
+      };
+
+      console.log('line', line);
+  
+      // Add this line to your array of lines to be drawn
+      this.connectionLines.push(line);
+    }
+  
+    // Ensure you trigger a redraw of your SVG lines if needed
+  }
+  
+
+
+
+
+
+
+
+  updateConnectionsOld(newNode: NodeItem) {
+    const svg = document.querySelector('.connections');
+    if (!svg) {
+      console.log('No SVG found');
+      return;
+    }
+    svg.innerHTML = ''; // Clear existing lines
+  
+    this.nodes[0].connections = [3];
+    
+    if (!this.nodeBeingDragged.connections) {
+      console.log('No connections found');
+      return;
+    }
+    
+    this.nodes.forEach(node => {
+      if (!node.connections) {
+        console.log('None found');
+        return;
+      }
+
+      const startElement = document.getElementById(`node-${node.id}`);
+      node.connections.forEach(connectionId => {
+        const endElement = document.getElementById(`node-${connectionId}`);
+        
+        if (startElement && endElement) {
+          const startPos = startElement.getBoundingClientRect();
+          const endPos = endElement.getBoundingClientRect();
+  
+          // Calculate start and end positions for the line
+          const x1 = startPos.left + startPos.width / 2;
+          const y1 = startPos.top + startPos.height / 2;
+          const x2 = endPos.left + endPos.width / 2;
+          const y2 = endPos.top + endPos.height / 2;
+  
+          // Create an SVG line element
+          const line = document.createElementNS('http://www.w3.org/2000/svg', 'line');
+          line.setAttribute('x1', x1.toString());
+          line.setAttribute('y1', y1.toString());
+          line.setAttribute('x2', x2.toString());
+          line.setAttribute('y2', y2.toString());
+          line.setAttribute('stroke', 'black'); // Style as needed
+  
+          svg.appendChild(line);
+        }
+      });
+    });
+  }
+  
 }

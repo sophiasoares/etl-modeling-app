@@ -27,7 +27,10 @@ export class GridComponent implements OnChanges, OnDestroy, AfterViewInit {
   @Output() selectedNodeEmitter = new EventEmitter<NodeItem>();
   @ViewChild('gridList', { static: false }) dropList!: CdkDropList;
   viewBox: string = '0 0 500 500';
-  gridLines: any[] = [];
+  gridLines: { x1: number; y1: number; x2: number; y2: number }[] = [];
+  connectionLines: { x1: number; y1: number; x2: number; y2: number }[] = [ 
+    { x1: 0, y1: 0, x2: 0, y2: 0 }
+  ];
   selectedNode: NodeItem | null = null;
 
   constructor(protected dragDropService: DragDropService) {
@@ -57,8 +60,8 @@ export class GridComponent implements OnChanges, OnDestroy, AfterViewInit {
   // Method to update the viewBox based on the size of the view
   updateViewBox() {
     // Can be used to zoom in and out
-    const viewSizeWidth = 600; 
-    const viewSizeHeight = 400;
+    const viewSizeWidth = 500; 
+    const viewSizeHeight = 300;
     this.viewBox = `0 0 ${viewSizeWidth} ${viewSizeHeight}`;
     // TODO: use the size of the window to determine the viewBox, but consider the left panel
     // this.viewBox = `0 0 ${window.innerWidth} ${window.innerHeight}`;

@@ -1,4 +1,4 @@
 interface Connection {
-    sourceId: string;
-    targetId: string;
+    sourceId: number;
+    targetId: number;
 }

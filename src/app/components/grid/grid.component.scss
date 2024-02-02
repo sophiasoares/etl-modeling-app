@@ -32,6 +32,11 @@ svg {
     div {
         cursor: pointer; 
     }
+
+    // Hide the placeholder when the node is being dragged within the grid
+    .cdk-drag-placeholder {
+        display: none;
+    }
 }
 
 .grid-item {

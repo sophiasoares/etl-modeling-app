@@ -3,5 +3,5 @@ export interface NodeItem {
     id: number;
     temp?: boolean;
     position?: { left: number, top: number };
-    isBeingDragged?: boolean;
+    connections?: number[]; // IDs of connected nodes
 }
