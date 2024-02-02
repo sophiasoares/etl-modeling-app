@@ -1,3 +1,5 @@
+@import '../../../variables';
+
 :host {
     display: block;
     width: 100%;
@@ -11,13 +13,17 @@ svg {
 }
 
 .node-container {
-    border: solid 2px #b32038;
+    border: solid $node-border-width $node-border-color;
+    border-radius: $container-border-radius;
     position: absolute;
     left: 0;
     width: 20%;
     height: auto;
     display: flex;
     flex-direction: column;
+    padding: 3px;
+    padding-bottom: 6px;
+    margin-left: 10px;
 }
 
 .node-container [cdkDrag] {
@@ -25,6 +31,7 @@ svg {
     padding: 10px;
     margin: 3px;
     margin-bottom: 0;
+    border-radius: $container-border-radius;
 }
 
 
@@ -35,8 +42,8 @@ svg {
 }
 
 .node-container [cdkDrag] ,.grid-container [cdkDrag], .drag-preview, .grid-item {
-    border: solid 1px #b32038;
-    background-color: #c04e83;
+    border: solid $node-border-width $node-border-color;
+    background-color: $node-color;
 }
 
 .grid-container {
@@ -48,6 +55,12 @@ svg {
     .cdk-drag-placeholder {
         display: none !important;
     }
+
+    div.selected {
+        border-width: $node-selected-border-width;
+        box-shadow: $node-shadow
+    }
+      
     
 }
 
@@ -57,16 +70,11 @@ svg {
 }
 
 .drag-preview, .grid-item {
-    border-radius: 8px;
+    border-radius: $node-border-radius;
 }
 
 .node-container div, .grid-container div {
     cursor: pointer; 
 }
-  
-.grid-container div.selected {
-    border-color: #740d1e; 
-    border-width: 3px;
-    box-shadow: 4px 6px 8px #a33648;
-}
+
   

@@ -1,1 +1,17 @@
-/* You can add global styles to this file, and also import other style files */
+@import 'bootstrap/dist/css/bootstrap.min.css';
+@import '_variables.scss';
+
+html, body {
+  font-family: $app-font-family;
+}
+
+input {
+  border: solid $node-border-width $node-border-color;
+  border-radius: $container-border-radius;
+  padding-left: 5px;
+
+  &:focus {
+    outline: none;
+    box-shadow: $input-shadow;
+  }
+}

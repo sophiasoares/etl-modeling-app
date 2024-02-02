@@ -1,0 +1,18 @@
+<div class="settings-container">
+    <div *ngIf="node">
+        <div class="container">
+            <div class="row">
+                <div class="col-auto">
+                    <p>Title:</p>
+                </div>
+                <div class="col">
+                    <input type="text" name="nodeTitle" [(ngModel)]="node.title">
+                </div>
+            </div>
+        </div>
+        <p>Position: {{ node.position?.left }}px, {{ node.position?.top }}px</p>
+        <p>Id: {{ node.id }}</p>
+    </div>
+</div>
+
+  

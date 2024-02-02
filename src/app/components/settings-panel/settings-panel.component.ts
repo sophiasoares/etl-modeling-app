@@ -1,7 +1,7 @@
 import { Component, Input  } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
-import { NodeItem } from '../models/node';
+import { NodeItem } from '../../models/node';
 
 @Component({
   selector: 'app-settings-panel',

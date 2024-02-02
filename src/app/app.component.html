@@ -1,2 +1,12 @@
-<input type="number" [(ngModel)]="gridSize" placeholder="Enter grid size">
-<app-grid [size]="gridSize"></app-grid>
+<div class="container">
+    <div class="row">
+        <div class="col-auto">
+            <p>Grid size:</p>
+        </div>
+        <div class="col">
+            <input type="number" [(ngModel)]="gridSize" placeholder="Enter grid size">
+        </div>
+    </div>
+</div>
+<app-grid [size]="gridSize" (selectedNodeEmitter)="onSelectedNode($event)"></app-grid>
+<app-settings-panel [node]="selectedNode"></app-settings-panel>

@@ -1,7 +1,7 @@
-import { Component, Input, SimpleChanges, OnChanges, ViewChild } from '@angular/core';
+import { Component, Input, SimpleChanges, OnChanges, ViewChild, Output, EventEmitter } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
-import { NodeItem } from '../models/node';
+import { NodeItem } from '../../models/node';
 import { SettingsPanelComponent } from '../settings-panel/settings-panel.component';
 import { 
   DragDropModule,
@@ -23,14 +23,14 @@ import {
 })
 export class GridComponent implements OnChanges {
   @Input() size: number;
+  @Output() selectedNodeEmitter = new EventEmitter<NodeItem>();
   @ViewChild('gridList', { static: false }) gridList!: CdkDropList;
   @ViewChild('nodeList', { static: false }) nodeList!: CdkDropList;
   viewBox: string = '0 0 500 500';
   gridLines: any[] = [];
-  nodes: NodeItem[] = Array(15).fill(0).map((x,i)=> { return { title: `Node ${i}`, id: i }; });
+  nodes: NodeItem[] = Array(10).fill(0).map((x,i)=> { return { title: `Node ${i}`, id: i }; });
   gridNodes: NodeItem[] = [];
   selectedNode: NodeItem | null = null;
-
 
   constructor() {
     this.size = 20; // default grid size
@@ -152,6 +152,7 @@ export class GridComponent implements OnChanges {
 
   // Method to handle node click
   onNodeClick(node: NodeItem) {
+    this.selectedNodeEmitter.emit(node); 
     this.selectedNode = node;
   }
 
