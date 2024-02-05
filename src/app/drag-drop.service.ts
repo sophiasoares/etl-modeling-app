@@ -1,7 +1,5 @@
 import { Injectable } from '@angular/core';
 import { NodeItem } from './models/node';
-import { ViewChild } from '@angular/core';
-import { OnInit } from '@angular/core';
 import { 
   DragDropModule,
   CdkDragDrop, 
@@ -16,23 +14,20 @@ import {
 @Injectable({
   providedIn: 'root'
 })
-export class DragDropService implements OnInit {
+export class DragDropService {
   gridList!: CdkDropList;
   nodeList!: CdkDropList;
   nodes: NodeItem[] = [];
   gridNodes: NodeItem[] = []; 
   dropLists: CdkDropList[] = [];
   nodeBeingDragged!: NodeItem;
-  connectionLines: { x1: number; y1: number; x2: number; y2: number }[] = [ 
-    //{ x1: 0, y1: 0, x2: 0, y2: 0 }
-  ];
+  connectionLines: { x1: number; y1: number; x2: number; y2: number }[] = [];
 
   constructor() {
     this.fillArrays();
   }
   
-  ngOnInit() {}
-
+  // Method to add a drop list to the group
   addDropList(dropList: CdkDropList) {
     // Check the dropList's id and assign it to the correct service property
     if (dropList.id === 'grid-list') {
@@ -43,12 +38,15 @@ export class DragDropService implements OnInit {
     this.dropLists.push(dropList);
   }
 
+
+  // Method to remove a drop list from the group
   removeDropList(dropList: CdkDropList) {
     const index = this.dropLists.indexOf(dropList);
     if (index > -1) {
       this.dropLists.splice(index, 1);
     }
   }
+
 
   // This method will be used to connect all drop lists in the group
   connectDropLists() {
@@ -59,6 +57,7 @@ export class DragDropService implements OnInit {
       }
     });
   }
+
 
   // Method to handle dropping a node
   drop(event: CdkDragDrop<NodeItem[]>) {
@@ -127,17 +126,14 @@ export class DragDropService implements OnInit {
   // Method to handle entering a node into a container
   entered(event: CdkDragEnter<NodeItem[]>) {
     this.nodes = this.nodes.filter(node => !node.temp);
-    // If  the container is the node container, do nothing
-    // if (event.container.id === this.nodeList.id) {
-    //   console.log('entered node list');
-    //   return;
-    // }
   }
+
 
   // Method to handle the start of a drag event
   dragStarted(event: CdkDragStart<NodeItem>) {
     this.nodeBeingDragged = event.source.data;
   }  
+
 
   // Method to calculate the position of a node relative to the grid
   calculateGridPosition(dropX: number, dropY: number, gridElement: HTMLElement): {left: number, top: number} {
@@ -147,6 +143,8 @@ export class DragDropService implements OnInit {
     return { left, top };
   }
 
+
+  // Method to fill the nodes array 
   fillArrays() {
     const titles = [
       'Read CSV', 'Read MySQL', 'Select Columns', 'Filter Columns', 'Simple Clean', 'Group Nodes',
@@ -154,102 +152,54 @@ export class DragDropService implements OnInit {
       'Sort Rows', 'Write CSV', 'Write MySQL',
     ];
 
-    // Fill the nodes array with NodeItems based on the titles
     this.nodes = titles.map((title, index) => {
       return { title: title, id: index }; 
     });
   }
 
 
+  // Method to update the connections between nodes
   updateConnections(newNode: NodeItem) {
+    console.log('newNode', newNode);
     // Assuming newNode is the latest node added and has its position set
     const previousNodeId = newNode.id - 1;
     const previousNode = this.gridNodes.find(node => node.id === previousNodeId);
   
     if (previousNode) {
-      // Optional: Track connections on the node itself
       previousNode.connections = [...(previousNode.connections || []), newNode.id];
       newNode.connections = [...(newNode.connections || []), previousNodeId];
   
       // Calculate the line between the two nodes
       // get the width and height of the node
-      const startElement = document.getElementById(`node-${previousNode.id}`);
-      const endElement = document.getElementById(`node-${newNode.id}`);
-      const previousNodeWidth = startElement ? startElement.clientWidth : 0;
-      const previousNodeHeight = startElement ? startElement.clientHeight : 0;
-      const newNodeWidth = endElement ? endElement.clientWidth : 0;
-      const newNodeHeight = endElement ? endElement.clientHeight : 0;
+      setTimeout(() => {
+        const startElement = document.getElementById(`node-${previousNode.id}`);
+        const endElement = document.getElementById(`node-${newNode.id}`);
+        const previousNodeWidth = startElement ? startElement.clientWidth : 0;
+        const previousNodeHeight = startElement ? startElement.clientHeight : 0;
+        const newNodeWidth = endElement ? endElement.clientWidth : 0;
+        const newNodeHeight = endElement ? endElement.clientHeight : 0;
 
-      const line = {
-        x1: previousNode.position!.left + (previousNodeWidth / 2),
-        y1: previousNode.position!.top,
-        x2: newNode.position!.left + (newNodeWidth / 2),
-        y2: newNode.position!.top + (newNodeHeight / 2),
-      };
-
-      console.log('line', line);
-  
-      // Add this line to your array of lines to be drawn
-      this.connectionLines.push(line);
-    }
-  
-    // Ensure you trigger a redraw of your SVG lines if needed
-  }
-  
+        console.log('endElement', endElement);
+        console.log('newNodeWidth', newNodeWidth);
+        console.log('newNodeHeight', newNodeHeight); 
 
 
-
-
-
-
-
-  updateConnectionsOld(newNode: NodeItem) {
-    const svg = document.querySelector('.connections');
-    if (!svg) {
-      console.log('No SVG found');
-      return;
-    }
-    svg.innerHTML = ''; // Clear existing lines
-  
-    this.nodes[0].connections = [3];
-    
-    if (!this.nodeBeingDragged.connections) {
-      console.log('No connections found');
-      return;
-    }
-    
-    this.nodes.forEach(node => {
-      if (!node.connections) {
-        console.log('None found');
-        return;
-      }
-
-      const startElement = document.getElementById(`node-${node.id}`);
-      node.connections.forEach(connectionId => {
-        const endElement = document.getElementById(`node-${connectionId}`);
+        const line = {
+          // Right-center of the old node
+          x1: previousNode.position!.left + previousNodeWidth, // Right edge of the old node
+          y1: previousNode.position!.top + (previousNodeHeight / 2), // Vertical center of the old node
         
-        if (startElement && endElement) {
-          const startPos = startElement.getBoundingClientRect();
-          const endPos = endElement.getBoundingClientRect();
+          // Left-center of the new node
+          x2: newNode.position!.left, // Left edge of the new node
+          y2: newNode.position!.top + (newNodeHeight / 2) // Vertical center of the new node
+        };        
   
-          // Calculate start and end positions for the line
-          const x1 = startPos.left + startPos.width / 2;
-          const y1 = startPos.top + startPos.height / 2;
-          const x2 = endPos.left + endPos.width / 2;
-          const y2 = endPos.top + endPos.height / 2;
-  
-          // Create an SVG line element
-          const line = document.createElementNS('http://www.w3.org/2000/svg', 'line');
-          line.setAttribute('x1', x1.toString());
-          line.setAttribute('y1', y1.toString());
-          line.setAttribute('x2', x2.toString());
-          line.setAttribute('y2', y2.toString());
-          line.setAttribute('stroke', 'black'); // Style as needed
-  
-          svg.appendChild(line);
-        }
-      });
-    });
+        console.log('line', line);
+         // Add this line to your array of lines to be drawn
+        this.connectionLines.push(line);
+      }, 0);
+    }
   }
+
   
 }

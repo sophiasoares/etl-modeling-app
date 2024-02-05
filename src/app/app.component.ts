@@ -6,6 +6,7 @@ import { FormsModule } from '@angular/forms';
 import { SettingsPanelComponent } from './components/settings-panel/settings-panel.component';
 import { NodePanelComponent } from './components/node-panel/node-panel.component';
 import { NodeItem } from './models/node';
+import { EtlModelingAreaComponent } from './components/etl-modeling-area/etl-modeling-area.component';
 
 @Component({
   selector: 'app-root',
@@ -16,7 +17,8 @@ import { NodeItem } from './models/node';
     GridComponent, 
     FormsModule, 
     SettingsPanelComponent, 
-    NodePanelComponent
+    NodePanelComponent,
+    EtlModelingAreaComponent
   ],
   templateUrl: './app.component.html',
   styleUrl: './app.component.scss'
