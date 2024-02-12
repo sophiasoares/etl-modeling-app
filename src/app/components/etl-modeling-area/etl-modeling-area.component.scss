@@ -14,7 +14,8 @@
 }
 
 .control {
-    border-color: green;
+    border-color: rgb(189, 95, 6);
+    background-color: white;
     border-radius: 10px;
     border-width: 2px;
     border-style: solid;
@@ -22,8 +23,7 @@
     text-align: center;
     cursor: move;
     height: fit-content;
-    height: -moz-max-content;
-    background-color: white;
+    height: -moz-max-content;  
 }
 
 #diagram .control {

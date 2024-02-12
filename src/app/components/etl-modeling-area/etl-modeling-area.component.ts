@@ -3,51 +3,75 @@ import { newInstance, BezierConnector } from "@jsplumb/browser-ui";
 import { isPlatformBrowser } from '@angular/common';
 import { DragDropModule } from '@angular/cdk/drag-drop';
 import { CommonModule } from '@angular/common';
+import { MatDialogModule, MatDialog } from '@angular/material/dialog';
+import { EditNodeModalComponent } from '../edit-node-modal/edit-node-modal.component';
+import { MyNode } from '../../models/node';
 
 @Component({
   selector: 'app-etl-modeling-area',
   standalone: true,
-  imports: [DragDropModule, CommonModule],
+  imports: [DragDropModule, CommonModule, MatDialogModule, EditNodeModalComponent],
   templateUrl: './etl-modeling-area.component.html',
   styleUrl: './etl-modeling-area.component.scss'
 })
 export class EtlModelingAreaComponent implements OnInit {
   jsPlumbInstance: any = null;
-  controls: any = [ 
-    {title: "Read CSV" }, {title: "Read MySQL" }, {title: "Select Columns" },
-    {title: "Filter Columns" }, {title: "Simple Clean" }, {title: "Group Nodes" }, 
-    {title: "Attach Files" }, {title: "Change Data Type" }, {title: "Replace Values" },
-    {title: "Write CSV" }, {title: "Write MySQL" }];
+  nodesInGrid: MyNode[] = [];
+  controls: MyNode[] = [];
 
-  constructor(@Inject(PLATFORM_ID) private platformId: Object) {}
+  constructor(@Inject(PLATFORM_ID) private platformId: Object, public dialog: MatDialog) {}
 
   ngOnInit() {
+    this.initNodes();
     if (isPlatformBrowser(this.platformId)) {
-      this.jsPlumbInstance = newInstance({
-        container: document.getElementById('diagram')!,
-      });
-
-      document.getElementById("diagram")!.style.transform = "scale(1.0)"
-
-      const control1 = document.getElementById('control1');
-      const control2 = document.getElementById('control2');
-      this.jsPlumbInstance.connect({
-        source: control1, 
-        target: control2,
-        anchors:["Right", "Left" ],
-        endpoint:"Dot",
-        paintStyle: {stroke: "green", strokeWidth: 3},
-        hoverPaintStyle: {stroke: "blue", strokeWidth: 5},
-        connector:{
-          type:BezierConnector.type,
-          options:{
-              curviness: 50
-          }
-        }
-      });
+      this.initializeJsPlumb();
     }
+  } 
+
+  initializeJsPlumb() {
+    this.jsPlumbInstance = newInstance({
+      container: document.getElementById('diagram')!,
+    });
+
+    document.getElementById("diagram")!.style.transform = "scale(1.0)"
+
+    const control1 = document.getElementById('control1');
+    const control2 = document.getElementById('control2');
+    this.jsPlumbInstance.connect({
+      source: control1, 
+      target: control2,
+      anchors:["Right", "Left" ],
+      endpoint:"Dot",
+      paintStyle: {stroke: "green", strokeWidth: 3},
+      hoverPaintStyle: {stroke: "blue", strokeWidth: 5},
+      connector:{
+        type:BezierConnector.type,
+        options:{
+            curviness: 50
+        }
+      }
+    });
   }
 
+  openEditModal(element: HTMLElement) {
+    const nodeId = element.id;
+    console.log(nodeId);
+    const nodeData = this.nodesInGrid.find((control: any) => control.id === nodeId);
+    if (nodeData) {
+      console.log("Node data", nodeData);
+      const dialogRef = this.dialog.open(EditNodeModalComponent, {
+        width: '350px',
+        data: { node: nodeData }
+      });
+  
+      dialogRef.afterClosed().subscribe(result => {
+        console.log('The dialog was closed', result);
+        // Handle the result from your modal here...
+      });
+    } else {
+      console.error('Node data not found for element', element);
+    }
+  }
   
   onDrop(event: any): void {
     const id = this.uuidv4(); // Generate a unique ID for the new element
@@ -70,8 +94,18 @@ export class EtlModelingAreaComponent implements OnInit {
 
       diagramContainer.appendChild(clone);
 
+      const newNode: MyNode = {
+        title: clone.innerText || "New Node", 
+        id: id,
+        position: { left: dropX, top: dropY }
+      };
+
+      this.nodesInGrid.push(newNode);
+
       const newElement = document.getElementById(id);
       if (newElement) {
+        this.attachDoubleClickListener(newElement);
+
         this.jsPlumbInstance.addEndpoint(newElement, {
           endpoint: "Dot",
           anchor: ["Right"],
@@ -109,5 +143,25 @@ export class EtlModelingAreaComponent implements OnInit {
       return v.toString(16);
     });
   }
+
+  // Method to attach a double-click listener to an element
+  attachDoubleClickListener(element: HTMLElement) {
+    element.addEventListener('dblclick', (event) => {
+      const target = event.target as HTMLElement;
+        this.openEditModal(target);
+    });
+  }
+
+
+  initNodes() {
+    this.controls = [
+    {title: "Read CSV", id: this.uuidv4() }, {title: "Read MySQL", id: this.uuidv4() }, {title: "Select Columns", id: this.uuidv4() },
+    {title: "Filter Columns", id: this.uuidv4() }, {title: "Simple Clean", id: this.uuidv4() }, {title: "Group Nodes", id: this.uuidv4() }, 
+    {title: "Attach Files", id: this.uuidv4() }, {title: "Change Data Type", id: this.uuidv4() }, {title: "Replace Values", id: this.uuidv4() },
+    {title: "Write CSV", id: this.uuidv4() }, {title: "Write MySQL", id: this.uuidv4() }];
+  }
+  
+
 }
+
 

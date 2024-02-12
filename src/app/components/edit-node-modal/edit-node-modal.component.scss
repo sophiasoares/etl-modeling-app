@@ -1,0 +1,28 @@
+.mat-dialog-container {
+    background: #a86c6c;
+    padding: 24px;
+    border-radius: 8px;
+    border-color: rgb(189, 95, 6);
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+
+    .mat-dialog-title {
+        color: #333;
+        font-size: 1.25rem;
+    }
+
+    .mat-dialog-content {
+        padding: 20px;
+        font-size: 1rem;
+        color: #666;
+    }
+
+    .mat-dialog-actions {
+        display: flex;
+        justify-content: flex-end;
+
+        button {
+            margin-left: 8px;
+        }
+    }
+}
+

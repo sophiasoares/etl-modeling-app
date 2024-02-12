@@ -1,14 +1,14 @@
 <div class="container-fluid">
     <div class="row">
         <div class="col-md-3">
-            <div id="toolbox" class="justify-content-center" cdkDropList (cdkDropListDropped)="onDrop($event)">
+            <div id="toolbox" class="justify-content-center" cdkDropList (cdkDropListDropped)="onDrop($event)" cdkDropListSortingDisabled>
                 <div class="control" *ngFor="let control of controls" cdkDrag>{{ control.title }}</div>
             </div>
         </div>
         <div class="col-md-9">
-            <div id="diagram" style="height: 90vh; position: relative">
+            <div id="diagram" style="position: relative">
                 <div id="control1" class="control" style="left: 50px; top: 50px">Control 1</div>
-                <div id="control2" class="control" style="left: 400px; top: 100px">Control 2</div>
+                <div id="control2" class="control" style="left: 300px; top: 100px">Control 2</div>
             </div>
         </div>
     </div>
