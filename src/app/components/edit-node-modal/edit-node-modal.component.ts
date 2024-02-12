@@ -1,9 +1,10 @@
-import { Component, Input } from '@angular/core';
+import { Component, Inject } from '@angular/core';
 import { MatDialogModule, } from '@angular/material/dialog';
 import { FormsModule } from '@angular/forms';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatInputModule } from '@angular/material/input';
 import { MyNode } from '../../models/node';
+import { MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
 
 
 @Component({
@@ -14,6 +15,13 @@ import { MyNode } from '../../models/node';
   styleUrl: './edit-node-modal.component.scss'
 })
 export class EditNodeModalComponent {
-  @Input() node: MyNode = {title: '', id: ''};
+
+  constructor(
+    public dialogRef: MatDialogRef<EditNodeModalComponent>,
+    @Inject(MAT_DIALOG_DATA) public data: any) {}
+
+  onSave(): void {
+    this.dialogRef.close({ newName: this.data.node.title, success: true });
+  }
 
 }
