@@ -12,6 +12,7 @@ export class SimpleCleanNode extends NodeBase {
     }
 
     getSettingsComponent() {
+        console.log('SimpleCleanNode.getSettingsComponent()');
         return SimpleCleanNodeSettingsComponent;
     }
 

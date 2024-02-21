@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { NodeItem } from './models/node';
+import { NodeItem, NodeBase } from './models/node';
 import { 
   DragDropModule,
   CdkDragDrop, 
@@ -22,6 +22,16 @@ export class DragDropService {
   dropLists: CdkDropList[] = [];
   nodeBeingDragged!: NodeItem;
   connectionLines: { x1: number; y1: number; x2: number; y2: number }[] = [];
+
+  currentDraggedNode: NodeBase | null = null;
+
+  startDrag(node: NodeBase): void {
+    this.currentDraggedNode = node;
+  }
+
+  endDrag(): void {
+    this.currentDraggedNode = null;
+  }
 
   constructor() {
     this.fillArrays();

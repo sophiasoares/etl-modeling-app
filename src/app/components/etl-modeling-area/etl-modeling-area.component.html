@@ -2,7 +2,8 @@
     <div class="row">
         <div class="col-md-3">
             <div id="toolbox" class="justify-content-center" cdkDropList (cdkDropListDropped)="onDrop($event)" cdkDropListSortingDisabled>
-                <div class="control" *ngFor="let control of controls" cdkDrag>{{ control.title }}</div>
+                <div class="control" *ngFor="let control of controls" cdkDrag (cdkDragStarted)="onDragStart(control)"
+                [attr.id]="control.Id">{{ control.Title }}</div>
             </div>
         </div>
         <div class="col-md-9">
